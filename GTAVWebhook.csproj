@@ -58,13 +58,19 @@
     <Compile Include="HttpServer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="Types\Attacker.cs" />
+    <Compile Include="Types\ChangeCharacter.cs" />
     <Compile Include="Types\ChibakuTensei.cs" />
     <Compile Include="Types\CommandInfo.cs" />
+    <Compile Include="Types\Earthquake.cs" />
     <Compile Include="Types\ExplodeVehicles.cs" />
+    <Compile Include="Types\KickFlip.cs" />
     <Compile Include="Types\RandomBike.cs" />
     <Compile Include="Types\RandomCar.cs" />
+    <Compile Include="Types\RandomTeleport.cs" />
     <Compile Include="Types\RemoveVehicles.cs" />
+    <Compile Include="Types\SpawnAlien.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

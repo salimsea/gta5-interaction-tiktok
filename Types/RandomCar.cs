@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using GTA.Native;
 using System;
 
 namespace GTAVWebhook.Types
@@ -95,7 +96,7 @@ namespace GTAVWebhook.Types
                 else
                 {
                     SwitchRandomCar();
-                    _switchCarTimer = 30;
+                    _switchCarTimer = 1;
                     _isChangingCar = false;
                 }
             }
@@ -113,9 +114,13 @@ namespace GTAVWebhook.Types
         private void SwitchRandomCar()
         {
             VehicleHash randomModel = _carModels[_random.Next(_carModels.Length)];
+            Vector3 _velocity = Vector3.Zero;
+            float _speed = 0f;
 
             if (_currentVehicle != null && _currentVehicle.Exists())
             {
+                _velocity = _currentVehicle.Velocity;
+                _speed = _currentVehicle.Speed;
                 _currentVehicle.Delete();
             }
 
@@ -126,8 +131,18 @@ namespace GTAVWebhook.Types
                 _currentVehicle.PlaceOnGround();
                 _currentVehicle.Repair();
                 _currentVehicle.IsEngineRunning = true;
+
+                _currentVehicle.Velocity = _velocity;
+                _currentVehicle.Speed = _speed > 0 ? _speed : 50f;
+
+                Function.Call(Hash.SET_VEHICLE_FORWARD_SPEED, _currentVehicle, _speed > 0 ? _speed : 50f);
+
                 Game.Player.Character.Task.WarpIntoVehicle(_currentVehicle, VehicleSeat.Driver);
+
+                Script.Wait(5);
+                _currentVehicle.Speed = _speed > 0 ? _speed : 50f;
             }
         }
+
     }
 }

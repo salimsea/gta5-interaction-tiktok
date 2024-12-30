@@ -1,6 +1,5 @@
 using GTA;
 using GTA.Math;
-using GTAV_MOD;
 using GTAVWebhook;
 using GTAVWebhook.Types;
 using System;
@@ -14,15 +13,16 @@ public class GTAVWebhookScript : Script
     private List<Vehicle> spawnedVehicles = new List<Vehicle>();
     private List<Attacker> npcList = new List<Attacker>();
 
-    private int switchCarTimer = 30;
-    private bool isChangingCar = false;
-    private Vector3 lastPosition;
-
     private readonly ChibakuTensei _chibakuTensei;
     private readonly RandomCar _randomCar;
     private readonly RandomBike _randomBike;
     private readonly RemoveVehicles _removeVehicles;
     private readonly ExplodeVehicles _explodeVehicles;
+    private readonly KickFlip _kickFlip;
+    private readonly RandomTeleport _randomTeleport;
+    private readonly SpawnAlien _spawnAlien;
+    private readonly ChangeCharacter _changeCharacter;
+    private readonly Earthquake _earthquake;
 
 
     public GTAVWebhookScript()
@@ -36,6 +36,11 @@ public class GTAVWebhookScript : Script
         _randomBike = new RandomBike();
         _removeVehicles = new RemoveVehicles();
         _explodeVehicles = new ExplodeVehicles();
+        _kickFlip = new KickFlip();
+        _randomTeleport = new RandomTeleport();
+        _spawnAlien = new SpawnAlien();
+        _changeCharacter = new ChangeCharacter();
+        _earthquake = new Earthquake();
     }
 
     private void OnTick(object sender, EventArgs e)
@@ -60,35 +65,15 @@ public class GTAVWebhookScript : Script
 
         _randomCar.Update();
         _randomBike.Update();
+        _removeVehicles.Update();
+        _explodeVehicles.Update();
         _chibakuTensei.Update();
+        _kickFlip.Update();
+        _randomTeleport.Update();
+        _spawnAlien.Update();
+        _changeCharacter.Update();
+        _earthquake.Update();
 
-
-        while (npcList.Count > 100)
-        {
-            try
-            {
-                npcList[0].Remove();
-                npcList.RemoveAt(0);
-                Logger.Log("Attacker over limit removed");
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("Failed to remove old attacker - " + ex.Message);
-            }
-
-        }
-
-        try
-        {
-            foreach (Attacker attacker in npcList)
-            {
-                attacker.DrawName();
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.Log("Failed to draw attacker names - " + ex.Message);
-        }
 
         CommandInfo command = httpServer.DequeueCommand();
 
@@ -129,7 +114,6 @@ public class GTAVWebhookScript : Script
                     _randomBike.Execute();
                     break;
                 }
-
             case "remove_vehicles":
                 {
                     _removeVehicles.Execute();
@@ -143,6 +127,31 @@ public class GTAVWebhookScript : Script
             case "explode_vehicles":
                 {
                     _explodeVehicles.Execute(isSelf: false);
+                    break;
+                }
+            case "kick_flip":
+                {
+                    _kickFlip.Execute();
+                    break;
+                }
+            case "random_teleport":
+                {
+                    _randomTeleport.Execute();
+                    break;
+                }
+            case "spawn_alien":
+                {
+                    _spawnAlien.Execute();
+                    break;
+                }
+            case "change_character":
+                {
+                    _changeCharacter.Execute();
+                    break;
+                }
+            case "earthquake":
+                {
+                    _earthquake.Execute();
                     break;
                 }
             case "chibaku_tensei":

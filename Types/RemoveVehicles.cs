@@ -51,7 +51,7 @@ namespace GTAVWebhook.Types
             }
             catch (Exception ex)
             {
-                Logger.Log($"Removing Vehicles {ex.Message}");
+                Logger.Log("Removing Vehicles "+ ex.Message);
             }
         }
     }
